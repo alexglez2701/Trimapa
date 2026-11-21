@@ -4,6 +4,7 @@ const SRC = {
   coruOF15: "https://www.coruna.es/descarga/1453811413965/OF15--2022-1.pdf",
   coruPista: "https://www.paxinasgalegas.es/pistas-de-atletismo-estadio-riazor-2525ep_61di.html",
   coruNatEscolar: "https://www.coruna.gal/descarga/1453895860327/Programa-NatacionEscolar_25_26_DeporteCoruna.pdf",
+  coruGestion: "https://coruna.gal/descarga/1453872443161/anexo-plazas-libres-2024-firmado-para-publicar.pdf",
   coruNada: "https://www.paxinasgalegas.es/fiestas/nada-e-corre_pr53066.pdf",
   coruElvina:
     "https://www.udc.es/export/sites/udc/deportes/_galeria_down/PROTOCOLO-REAPERTURA-ESTADIO-ELVINA.pdf_2063069299.pdf",
@@ -286,10 +287,19 @@ export const FACILITIES: Facility[] = [
     zone: "Riazor",
     kinds: ["swim"],
     location: { lat: 43.3666, lng: -8.4158 },
-    highlights: ["Sede del Nada e Corre Cidade da Coruña (14 de noviembre de 2026)", "Prueba organizada por el Club Triatlón Coruña"],
+    highlights: ["Piscina municipal de gestión directa del Concello", "Sede del Nada e Corre Cidade da Coruña (14 de noviembre de 2026)"],
     status: "open",
-    prices: [{ type: "entrada", label: "Entrada", covers: ["swim"], amount: null, status: "unknown" }],
-    sources: [{ label: "Reglamento del Nada e Corre", url: SRC.coruNada }],
+    prices: [
+      { type: "entrada", label: "Entrada (1 hora)", covers: ["swim"], amount: 3.42, status: "official", year: "2022", sourceUrl: SRC.coruOF15, note: "Tarifa de las piscinas municipales de gestión directa" },
+      { type: "bono", label: "Bono 20 usos de 1 hora", covers: ["swim"], amount: 22.32, uses: 20, status: "official", year: "2022", sourceUrl: SRC.coruOF15 },
+      { type: "abono", label: "Abono mensual sin límite de horario", covers: ["swim"], amount: 28.02, abonoId: "coruna-gestion-directa", status: "official", year: "2022", sourceUrl: SRC.coruOF15, note: "Mañanas de lunes a viernes: 17,69 €" },
+      { type: "alta", label: "Cuota de alta del abono (una vez)", amount: 29.48, status: "official", year: "2022", sourceUrl: SRC.coruOF15 },
+    ],
+    sources: [
+      { label: "Ordenanza fiscal 15 (2022)", url: SRC.coruOF15 },
+      { label: "Concello da Coruña, gestión de instalaciones", url: SRC.coruGestion },
+      { label: "Reglamento del Nada e Corre", url: SRC.coruNada },
+    ],
     reviewedAt: REVIEWED,
   },
   {
