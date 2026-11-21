@@ -2,7 +2,7 @@ import Link from "next/link";
 import { MapPin } from "lucide-react";
 import type { Facility } from "@/data/types";
 import { headlinePrice } from "@/lib/pricing";
-import { Cover } from "./Cover";
+import { FacilityImage } from "./FacilityImage";
 import { KindTag } from "./kinds";
 import { FacilityStatus, PriceStatus } from "./Badges";
 import { SaveButton } from "./SaveButton";
@@ -24,7 +24,7 @@ export function FacilityCard({
       onMouseLeave={() => onHover?.(null)}
     >
       <div className="relative h-32 overflow-hidden">
-        <Cover kind={facility.kinds[0]} id={facility.slug} className="h-full w-full transition duration-500 group-hover:scale-[1.03]" />
+        <FacilityImage facility={facility} id={facility.slug} className="h-full w-full transition duration-500 group-hover:scale-[1.03]" />
         <div className="absolute left-3 top-3 flex gap-1.5">
           <FacilityStatus facility={facility} />
         </div>

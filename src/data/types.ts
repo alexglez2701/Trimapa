@@ -34,6 +34,17 @@ export interface Source {
   url: string;
 }
 
+export interface Photo {
+  /** Ruta dentro de /public (por ejemplo "/fotos/piscina-san-amaro.jpg") o URL completa. */
+  src: string;
+  alt: string;
+  /** Autor o propietario de la foto. Obligatorio si no es propia. */
+  credit?: string;
+  /** Licencia o permiso (por ejemplo "Foto propia", "Cedida por el Concello", "CC BY-SA 4.0"). */
+  license?: string;
+  sourceUrl?: string;
+}
+
 export interface Facility {
   slug: string;
   city: CityId;
@@ -44,6 +55,8 @@ export interface Facility {
   /** null si no tiene una ubicación fija (por ejemplo, un club). */
   location: { lat: number; lng: number } | null;
   highlights: string[];
+  /** Foto real de la instalación. Si no hay, se muestra una ilustración. */
+  photo?: Photo;
   status?: "open" | "works" | "intermittent" | "seasonal";
   statusNote?: string;
   prices: Price[];

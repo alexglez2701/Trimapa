@@ -6,7 +6,7 @@ import { APP } from "@/config";
 import { FACILITIES, getCity, getFacilities, getFacility } from "@/data/facilities";
 import type { Price } from "@/data/types";
 import { DISCIPLINE_LABEL, formatEuro, perUse } from "@/lib/pricing";
-import { Cover } from "@/components/Cover";
+import { FacilityImage } from "@/components/FacilityImage";
 import { KindTag } from "@/components/kinds";
 import { FacilityStatus, PriceStatus } from "@/components/Badges";
 import { SaveButton } from "@/components/SaveButton";
@@ -67,7 +67,7 @@ export default async function FacilityPage({ params }: Params) {
     <main className="lg:pt-16">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="relative h-[260px] overflow-hidden lg:mx-auto lg:mt-6 lg:h-[320px] lg:max-w-5xl lg:rounded-[28px]">
-        <Cover kind={f.kinds[0]} id={`hero-${f.slug}`} className="h-full w-full" />
+        <FacilityImage facility={f} id={`hero-${f.slug}`} className="h-full w-full" />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4 pt-[max(16px,env(safe-area-inset-top))]">
           <Link href={`/${city.id}`} aria-label={`Volver a ${city.name}`} className="grid h-10 w-10 place-items-center rounded-full bg-white/90 shadow-sm backdrop-blur">
             <ArrowLeft size={19} />
@@ -163,6 +163,12 @@ export default async function FacilityPage({ params }: Params) {
                   </li>
                 ))}
               </ul>
+              {f.photo?.credit ? (
+                <p className="mt-3 text-xs text-muted">
+                  Foto: {f.photo.sourceUrl ? <a href={f.photo.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">{f.photo.credit}</a> : f.photo.credit}
+                  {f.photo.license ? ` (${f.photo.license})` : ""}
+                </p>
+              ) : null}
               <p className="mt-3 text-xs text-muted">Ficha revisada el {reviewed}.</p>
               <a href={mailto} className="mt-4 flex items-center justify-center gap-2 rounded-full bg-canvas px-4 py-2.5 text-sm font-semibold ring-1 ring-line hover:ring-line-strong">
                 <PencilLine size={16} /> Corregir un dato
