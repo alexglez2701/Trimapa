@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TriMapa
 
-## Getting Started
+Web app (PWA) para encontrar dónde entrenar triatlón en Galicia y cuánto cuesta: piscinas, pistas de atletismo, gimnasios y clubes de Vigo y A Coruña, con precios comparados y una calculadora que recomienda la combinación más barata de entradas, bonos y abonos.
 
-First, run the development server:
+## Qué incluye
+
+- **Explorar** (`/vigo`, `/a-coruna`): mapa real, filtros por tipo, buscador y tarjetas de cada instalación.
+- **Ficha** (`/vigo/piscina-as-travesas`…): una página por instalación, con precios, fuente y año de cada tarifa, mapa, "Cómo llegar" y botón para corregir datos. Cada ficha es una URL propia que Google puede indexar.
+- **Calculadora** (`/vigo/calculadora`): compara todas las combinaciones de abonos, bonos y entradas de la ciudad.
+- **Guardados**: favoritos en el dispositivo.
+- Instalable en el móvil (manifest PWA), `sitemap.xml` y `robots.txt`.
+
+## Tecnología
+
+- [Next.js 16](https://nextjs.org) (App Router) + TypeScript + Tailwind CSS 4
+- [MapLibre GL](https://maplibre.org) con el mapa base gratuito de [OpenFreeMap](https://openfreemap.org) (sin clave). Si el mapa no carga, se muestra un mapa de respaldo con los contornos municipales del IGN.
+- Iconos [Lucide](https://lucide.dev), tipografía Plus Jakarta Sans (autoalojada).
+- Tests con Vitest.
+
+## Arrancar en tu ordenador
+
+Necesitas [Node.js 20 o superior](https://nodejs.org).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # abre http://localhost:3000
+npm test           # tests de la calculadora
+npm run build      # build de producción
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Publicarla en internet (Vercel, gratis)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Sube esta carpeta a un repositorio de GitHub.
+2. Entra en [vercel.com](https://vercel.com), inicia sesión con GitHub y pulsa **Add New → Project**.
+3. Elige el repositorio y pulsa **Deploy**. No hace falta configurar nada.
+4. Cuando tengas dominio, añádelo en Vercel y cambia `siteUrl` en `src/config.ts`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Dónde está cada cosa
 
-## Learn More
+```
+src/
+  config.ts              nombre de la app, email de contacto, dominio, estilo del mapa
+  data/facilities.ts     ciudades e instalaciones (aquí se añaden y corrigen datos)
+  data/types.ts          modelo de datos
+  lib/pricing.ts         lógica de precios y calculadora (+ pricing.test.ts)
+  components/            mapa, tarjetas, calculadora, barra de navegación…
+  app/                   páginas (rutas)
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Añadir o corregir una instalación
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Edita `src/data/facilities.ts`. Cada precio lleva:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `status`: `"verified"` (comprobado hace poco), `"official"` (tarifa oficial de un año, indicar `year`) o `"unknown"`.
+- `sourceUrl`: enlace a la fuente.
+- En abonos, `covers` indica qué disciplinas incluye y `abonoId` sirve para que un abono válido en varias instalaciones cuente una sola vez.
 
-## Deploy on Vercel
+## Pendiente
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] Cambiar `contactEmail` y `siteUrl` en `src/config.ts`.
+- [ ] Verificar precios: los de A Coruña son de la ordenanza de 2022, los de piscinas de Vigo de 2013 y los de la UVigo del curso 2019-20.
+- [ ] Fotos reales de las instalaciones (con permiso) en lugar de las ilustraciones.
+- [ ] Base de datos (Supabase) para editar datos sin tocar código, cuentas de usuario y correcciones de la comunidad.
+- [ ] Modo sin conexión (service worker).
+- [ ] Más ciudades: Santiago, Ourense, Lugo, Pontevedra y Ferrol.

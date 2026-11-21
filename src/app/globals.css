@@ -1,26 +1,111 @@
 @import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Sistema de diseño: claro y premium. Un solo acento azul agua; los colores por tipo
+   de instalación solo marcan iconos y pines. */
+@theme {
+  --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-canvas: #f4f6f7;
+  --color-surface: #ffffff;
+  --color-ink: #0c1a22;
+  --color-ink-2: #3c4c56;
+  --color-muted: #6b7a84;
+  --color-line: #e4e9ec;
+  --color-line-strong: #cfd8dd;
+
+  --color-accent: #0a7ea4;
+  --color-accent-strong: #06607f;
+  --color-accent-soft: #e6f3f7;
+
+  --color-swim: #0a7ea4;
+  --color-track: #e0603f;
+  --color-gym: #5a55d2;
+  --color-club: #2e9e6b;
+  --color-free: #c98a12;
+
+  --color-ok: #1f8a5b;
+  --color-ok-soft: #e7f5ee;
+  --color-warn: #a86a12;
+  --color-warn-soft: #fbf2e2;
+
+  --radius-card: 20px;
+  --shadow-card: 0 1px 2px rgb(12 26 34 / 0.04), 0 8px 24px rgb(12 26 34 / 0.06);
+  --shadow-float: 0 2px 6px rgb(12 26 34 / 0.08), 0 16px 40px rgb(12 26 34 / 0.12);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: light;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Pines del mapa */
+.tm-pin {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(12 26 34 / 0.18);
+  border: 2px solid #fff;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.tm-pin span {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+.tm-pin[data-selected="true"] {
+  transform: scale(1.22);
+  box-shadow: 0 0 0 4px rgb(10 126 164 / 0.25), 0 4px 14px rgb(12 26 34 / 0.25);
+}
+.tm-pin[data-muted="true"] {
+  opacity: 0.55;
+}
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
 }
