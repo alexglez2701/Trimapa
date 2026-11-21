@@ -132,7 +132,8 @@ export function MapView({
 
   return (
     <div className={`relative overflow-hidden bg-[#e8eef1] ${className}`}>
-      <div ref={box} className="absolute inset-0" />
+      {/* h-full en vez de absolute: la hoja de estilos de MapLibre fuerza position: relative en el contenedor */}
+      <div ref={box} className="h-full w-full" />
       {fallback ? <FallbackMap city={city} facilities={located} selected={selected} onSelect={onSelect} /> : null}
     </div>
   );
