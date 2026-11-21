@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import type { Facility } from "@/data/types";
-import { headlinePrice } from "@/lib/pricing";
 import { FacilityImage } from "./FacilityImage";
 import { KindTag } from "./kinds";
-import { FacilityStatus, PriceStatus } from "./Badges";
+import { FacilityStatus } from "./Badges";
+import { PriceSummary } from "./PriceSummary";
 import { SaveButton } from "./SaveButton";
 
 export function FacilityCard({
@@ -16,7 +16,6 @@ export function FacilityCard({
   selected?: boolean;
   onHover?: (slug: string | null) => void;
 }) {
-  const h = headlinePrice(facility);
   return (
     <article
       className={`group relative overflow-hidden rounded-[var(--radius-card)] bg-surface shadow-[var(--shadow-card)] ring-1 transition ${selected ? "ring-2 ring-accent" : "ring-line hover:ring-line-strong"}`}
@@ -48,13 +47,7 @@ export function FacilityCard({
             <KindTag key={k} kind={k} />
           ))}
         </div>
-        <div className="flex items-end justify-between border-t border-line pt-3">
-          <p>
-            <span className="tabular text-xl font-extrabold tracking-tight">{h.value}</span>
-            {h.caption ? <span className="ml-1.5 text-sm text-muted">{h.caption}</span> : null}
-          </p>
-          {h.price || h.value === "Por confirmar" ? <PriceStatus price={h.price} /> : null}
-        </div>
+        <PriceSummary facility={facility} />
       </div>
     </article>
   );

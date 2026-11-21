@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getFacilities } from "@/data/facilities";
-import { cheapestPlan, headlinePrice, perUse } from "./pricing";
+import { cheapestPlan, headlinePrice, perUse, priceSummary } from "./pricing";
 
 describe("perUse", () => {
   it("divide el bono entre sus usos", () => {
@@ -54,5 +54,38 @@ describe("headlinePrice", () => {
 
   it("solo incluye instalaciones de entrenamiento (sin piscinas de ocio)", () => {
     expect(getFacilities("vigo").some((f) => f.slug.includes("samil"))).toBe(false);
+  });
+});
+
+describe("priceSummary", () => {
+  const get = (city: "vigo" | "a-coruna", slug: string) => getFacilities(city).find((f) => f.slug === slug)!;
+
+  it("San Amaro: diario, mensual y bono con precio", () => {
+    const s = priceSummary(get("a-coruna", "piscina-san-amaro"));
+    expect(s.daily.value).toContain("3,42");
+    expect(s.monthly.value).toContain("28,02");
+    expect(s.bono.detail).toContain("20 usos");
+  });
+
+  it("Pista de Riazor: sin abono mensual en la tarifa", () => {
+    const s = priceSummary(get("a-coruna", "pista-cubierta-riazor"));
+    expect(s.monthly.state).toBe("none");
+    expect(s.bono.state).toBe("price");
+  });
+
+  it("Piscinas de Vigo: entrada y bono existen pero sin precio", () => {
+    const s = priceSummary(get("vigo", "piscina-lavadores"));
+    expect(s.daily.state).toBe("unknown");
+    expect(s.bono.state).toBe("unknown");
+    expect(s.monthly.value).toContain("11,25");
+  });
+});
+
+describe("priceSummary diario por disciplina principal", () => {
+  it("San Diego muestra la entrada de piscina, no la de gimnasio", () => {
+    const f = getFacilities("a-coruna").find((x) => x.slug === "complejo-san-diego")!;
+    const s = priceSummary(f);
+    expect(s.daily.value).toContain("4,97");
+    expect(s.daily.detail).toContain("natación");
   });
 });

@@ -40,6 +40,7 @@ export function MapView({
   const map = useRef<MLMap | null>(null);
   const markers = useRef<Map<string, { marker: Marker; el: HTMLElement }>>(new Map());
   const [fallback, setFallback] = useState(false);
+  const fitted = useRef(false);
   const onSelectRef = useRef(onSelect);
   useEffect(() => {
     onSelectRef.current = onSelect;
@@ -117,11 +118,18 @@ export function MapView({
         const marker = new ml.Marker({ element: el }).setLngLat([f.location!.lng, f.location!.lat]).addTo(m);
         markers.current.set(f.slug, { marker, el });
       }
+      // Encuadre: que se vean todas las instalaciones visibles.
+      if (interactive && located.length) {
+        const b = new ml.LngLatBounds();
+        located.forEach((f) => b.extend([f.location!.lng, f.location!.lat]));
+        m.fitBounds(b, { padding: { top: 56, bottom: 56, left: 48, right: 56 }, maxZoom: 14.5, duration: fitted.current ? 600 : 0 });
+        fitted.current = true;
+      }
     })();
     return () => {
       alive = false;
     };
-  }, [located]);
+  }, [located, interactive]);
 
   // Selección
   useEffect(() => {
@@ -153,9 +161,15 @@ function FallbackMap({
 }) {
   const W = 800,
     H = 600;
-  const span = city.id === "vigo" ? 0.2 : 0.13;
-  const [cx, cy] = city.center;
+  // Encuadre que incluye todas las instalaciones, con margen.
+  const lngs = facilities.map((f) => f.location!.lng);
+  const lats = facilities.map((f) => f.location!.lat);
+  const cx = lngs.length ? (Math.min(...lngs) + Math.max(...lngs)) / 2 : city.center[0];
+  const cy = lats.length ? (Math.min(...lats) + Math.max(...lats)) / 2 : city.center[1];
   const k = Math.cos((cy * Math.PI) / 180);
+  const spanLng = lngs.length ? (Math.max(...lngs) - Math.min(...lngs)) * k : 0;
+  const spanLat = lats.length ? Math.max(...lats) - Math.min(...lats) : 0;
+  const span = Math.max(spanLng * 1.6, spanLat * 1.6 * (W / H), 0.03);
   const sx = W / span;
   const x = (lng: number) => (lng - cx) * sx * k + W / 2;
   const y = (lat: number) => (cy - lat) * sx + H / 2;

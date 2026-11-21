@@ -10,6 +10,7 @@ import { FacilityImage } from "@/components/FacilityImage";
 import { KindTag } from "@/components/kinds";
 import { FacilityStatus, PriceStatus } from "@/components/Badges";
 import { SaveButton } from "@/components/SaveButton";
+import { PriceSummary } from "@/components/PriceSummary";
 import { MapView } from "@/components/MapView";
 
 type Params = { params: Promise<{ ciudad: string; slug: string }> };
@@ -105,6 +106,12 @@ export default async function FacilityPage({ params }: Params) {
               <h2 id="precios" className="text-xl font-bold">
                 Precios
               </h2>
+              <div className="mt-3">
+                <PriceSummary facility={f} size="lg" />
+              </div>
+              {f.prices.length ? (
+                <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-muted">Todas las tarifas</h3>
+              ) : null}
               {f.prices.length ? (
                 <ul className="mt-3 divide-y divide-line overflow-hidden rounded-[var(--radius-card)] bg-surface ring-1 ring-line">
                   {f.prices.map((p) => (
@@ -126,9 +133,7 @@ export default async function FacilityPage({ params }: Params) {
                     </li>
                   ))}
                 </ul>
-              ) : (
-                <p className="mt-3 rounded-[var(--radius-card)] bg-surface p-4 text-muted ring-1 ring-line">Sin precios mientras esté cerrada.</p>
-              )}
+              ) : null}
               {breakEven ? (
                 <p className="mt-3 rounded-2xl bg-accent-soft p-4 text-[15px] text-accent-strong">
                   El abono compensa a partir de <strong>{breakEven} sesiones al mes</strong>, unas {Math.ceil(breakEven / APP.weeksPerMonth)} por semana.{" "}

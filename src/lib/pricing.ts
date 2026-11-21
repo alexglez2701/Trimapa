@@ -161,3 +161,86 @@ export function cheapestPlan(facilities: Facility[], need: Need, weeks = APP.wee
     missing: [],
   };
 }
+
+export type SummaryState = "price" | "unknown" | "none";
+
+export interface SummaryItem {
+  state: SummaryState;
+  /** Texto principal: importe, "Por confirmar" o "No consta". */
+  value: string;
+  /** Detalle corto: "desde", usos del bono, año de la tarifa… */
+  detail?: string;
+  price?: Price;
+}
+
+export interface PriceSummary {
+  daily: SummaryItem;
+  monthly: SummaryItem;
+  bono: SummaryItem;
+}
+
+function pick(prices: Price[], type: Price["type"]): { known: Price[]; unknown: Price[] } {
+  const all = prices.filter((p) => p.type === type);
+  return { known: all.filter((p) => p.amount != null), unknown: all.filter((p) => p.amount == null) };
+}
+
+function yearNote(p: Price): string | undefined {
+  if (p.status === "official" && p.year) return `tarifa ${p.year}`;
+  if (p.status === "verified") return "verificado";
+  return undefined;
+}
+
+/** Resumen de precio diario, mensual y bono de una instalación. */
+export function priceSummary(f: Facility): PriceSummary {
+  const entradas = pick(f.prices, "entrada");
+  const abonos = pick(f.prices, "abono");
+  const bonos = pick(f.prices, "bono");
+
+  const fromList = (list: Price[], suffix = ""): SummaryItem => {
+    const sorted = [...list].sort((a, b) => a.amount! - b.amount!);
+    const p = sorted[0];
+    const several = new Set(sorted.map((x) => x.amount)).size > 1;
+    const value = p.amount === 0 ? "Gratis" : formatEuro(p.amount!) + suffix;
+    const extra = [several ? "desde" : undefined, yearNote(p)].filter(Boolean).join(" · ");
+    return { state: "price", value, detail: extra || undefined, price: p };
+  };
+
+  // Para el precio diario, prioriza la disciplina principal de la instalación (p. ej. la piscina antes que el gimnasio).
+  const main = f.kinds[0] as Discipline;
+  const mainEntradas = entradas.known.filter((p) => p.covers?.includes(main));
+  const multiDaily = mainEntradas.length > 0 && mainEntradas.length < entradas.known.length;
+  const dailyBase = mainEntradas.length ? mainEntradas : entradas.known;
+  const daily: SummaryItem = dailyBase.length
+    ? (() => {
+        const item = fromList(dailyBase);
+        if (multiDaily && DISCIPLINE_LABEL[main]) item.detail = [DISCIPLINE_LABEL[main], item.detail].filter(Boolean).join(" · ");
+        return item;
+      })()
+    : entradas.unknown.length
+      ? { state: "unknown", value: "Por confirmar" }
+      : { state: "none", value: "No consta" };
+
+  const monthly: SummaryItem = abonos.known.length
+    ? fromList(abonos.known)
+    : abonos.unknown.length
+      ? { state: "unknown", value: "Por confirmar" }
+      : { state: "none", value: "No consta" };
+
+  let bono: SummaryItem;
+  if (bonos.known.length) {
+    const b = [...bonos.known].sort((a, c) => perUse(a)! - perUse(c)!)[0];
+    bono = {
+      state: "price",
+      value: formatEuro(b.amount!),
+      detail: [`${b.uses} usos · ${formatEuro(perUse(b)!)}/uso`, yearNote(b)].filter(Boolean).join(" · "),
+      price: b,
+    };
+  } else if (bonos.unknown.length) {
+    const b = bonos.unknown[0];
+    bono = { state: "unknown", value: "Sí, precio por confirmar", detail: b.uses ? `${b.uses} usos` : undefined, price: b };
+  } else {
+    bono = { state: "none", value: "No consta" };
+  }
+
+  return { daily, monthly, bono };
+}

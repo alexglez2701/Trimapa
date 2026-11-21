@@ -3,6 +3,7 @@ import type { City, CityId, Facility } from "./types";
 const SRC = {
   coruOF15: "https://www.coruna.es/descarga/1453811413965/OF15--2022-1.pdf",
   coruPista: "https://www.paxinasgalegas.es/pistas-de-atletismo-estadio-riazor-2525ep_61di.html",
+  coruNatEscolar: "https://www.coruna.gal/descarga/1453895860327/Programa-NatacionEscolar_25_26_DeporteCoruna.pdf",
   coruNada: "https://www.paxinasgalegas.es/fiestas/nada-e-corre_pr53066.pdf",
   coruElvina:
     "https://www.udc.es/export/sites/udc/deportes/_galeria_down/PROTOCOLO-REAPERTURA-ESTADIO-ELVINA.pdf_2063069299.pdf",
@@ -23,17 +24,37 @@ const SRC = {
 
 const REVIEWED = "2026-11-21";
 
-const vigoMunicipalAbono = {
-  type: "abono" as const,
-  label: "Abono municipal de piscinas",
-  covers: ["swim" as const],
-  amount: 11.25,
-  abonoId: "vigo-piscinas-municipales",
-  status: "official" as const,
-  year: "2013",
-  sourceUrl: SRC.vigoAbono,
-  note: "Empadronados. Vale en As Travesas, Lavadores, Teis y Valadares",
-};
+const vigoMunicipalPrices = [
+  {
+    type: "entrada" as const,
+    label: "Entrada suelta",
+    covers: ["swim" as const],
+    amount: null,
+    status: "unknown" as const,
+    note: "Existe, pero no hemos encontrado el precio",
+  },
+  {
+    type: "bono" as const,
+    label: "Tarjeta de 20 usos",
+    covers: ["swim" as const],
+    amount: null,
+    uses: 20,
+    status: "unknown" as const,
+    sourceUrl: SRC.vigoAbono,
+    note: "Válida seis meses (dato de 2013). Precio por confirmar",
+  },
+  {
+    type: "abono" as const,
+    label: "Abono mensual (carné de socio)",
+    covers: ["swim" as const],
+    amount: 11.25,
+    abonoId: "vigo-piscinas-municipales",
+    status: "official" as const,
+    year: "2013",
+    sourceUrl: SRC.vigoAbono,
+    note: "Empadronados; no empadronados 15 €. Vale en As Travesas, Lavadores, Teis y Valadares",
+  },
+];
 
 export const CITIES: City[] = [
   {
@@ -85,7 +106,7 @@ export const FACILITIES: Facility[] = [
     location: { lat: 42.2235, lng: -8.7275 },
     highlights: ["Piscina cubierta municipal", "El abono municipal vale en las cuatro piscinas cubiertas de Vigo"],
     status: "open",
-    prices: [vigoMunicipalAbono],
+    prices: vigoMunicipalPrices,
     sources: [{ label: "Atlántico (2013)", url: SRC.vigoAbono }],
     reviewedAt: REVIEWED,
   },
@@ -98,7 +119,7 @@ export const FACILITIES: Facility[] = [
     location: { lat: 42.221, lng: -8.6935 },
     highlights: ["Piscina cubierta municipal", "Abierta también en verano", "Los usuarios han denunciado saturación y goteras"],
     status: "open",
-    prices: [vigoMunicipalAbono],
+    prices: vigoMunicipalPrices,
     sources: [
       { label: "Atlántico (2013)", url: SRC.vigoAbono },
       { label: "Vigo-É", url: SRC.vigoVerano },
@@ -114,7 +135,7 @@ export const FACILITIES: Facility[] = [
     location: { lat: 42.1885, lng: -8.702 },
     highlights: ["Piscina cubierta municipal", "Abierta también en verano"],
     status: "open",
-    prices: [vigoMunicipalAbono],
+    prices: vigoMunicipalPrices,
     sources: [
       { label: "Atlántico (2013)", url: SRC.vigoAbono },
       { label: "Vigo-É", url: SRC.vigoVerano },
@@ -206,7 +227,7 @@ export const FACILITIES: Facility[] = [
     zone: "Monte Alto",
     kinds: ["swim"],
     location: { lat: 43.3836, lng: -8.4033 },
-    highlights: ["Piscina municipal junto a la playa de San Amaro", "Abono familiar con convenio con el Club do Mar"],
+    highlights: ["Piscina municipal gestionada por el Club do Mar de Santo Amaro", "Cursos municipales de natación para adultos"],
     status: "open",
     prices: [
       { type: "entrada", label: "Entrada (1 hora)", covers: ["swim"], amount: 3.42, status: "official", year: "2022", sourceUrl: SRC.coruOF15 },
@@ -214,7 +235,10 @@ export const FACILITIES: Facility[] = [
       { type: "abono", label: "Abono mensual sin límite de horario", covers: ["swim"], amount: 28.02, abonoId: "san-amaro", status: "official", year: "2022", sourceUrl: SRC.coruOF15, note: "Mañanas de lunes a viernes: 17,69 €" },
       { type: "alta", label: "Cuota de alta del abono (una vez)", amount: 29.48, status: "official", year: "2022", sourceUrl: SRC.coruOF15 },
     ],
-    sources: [{ label: "Ordenanza fiscal 15 (2022)", url: SRC.coruOF15 }],
+    sources: [
+      { label: "Ordenanza fiscal 15 (2022)", url: SRC.coruOF15 },
+      { label: "Concello da Coruña, natación escolar 2025-26", url: SRC.coruNatEscolar },
+    ],
     reviewedAt: REVIEWED,
   },
   {
