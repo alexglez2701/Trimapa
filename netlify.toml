@@ -1,0 +1,7 @@
+# Configuración de Netlify: genera la versión estática y publica la carpeta "out".
+[build]
+  command = "npm run build:static"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
