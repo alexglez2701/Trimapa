@@ -57,6 +57,8 @@ src/
 
 ### Añadir o corregir una instalación
 
+Solo se incluyen instalaciones para entrenar: piscinas con calles para nadar largos, pistas de atletismo, gimnasios y clubes. Nada de piscinas de ocio o de baño.
+
 Edita `src/data/facilities.ts`. Cada precio lleva:
 
 - `status`: `"verified"` (comprobado hace poco), `"official"` (tarifa oficial de un año, indicar `year`) o `"unknown"`.

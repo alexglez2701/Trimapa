@@ -18,7 +18,6 @@ const SRC = {
     "https://www.xunta.gal/notas-de-prensa/-/nova/023985/modulo-atletismo-del-ifevi-que-xunta-invirtio-cerca-millon-euros-recibio-mas",
   uvigo:
     "https://secretaria.uvigo.gal/uv/web/normativa/public/normativa/documento/downloadbyhash/238f0658e11b1f91afa135dfa1525000dbe0aa04540168ad1964db5a37d52aed",
-  samil: "https://hoxe.vigo.org/movemonos/asocia_noticias.php?lang=en",
   marVigo: "https://fegatri.org/wp-content/uploads/2023/11/Regulamento-TRI-MENORES-CONCELLO-DE-VIGO-2024-1.pdf",
 };
 
@@ -42,7 +41,7 @@ export const CITIES: City[] = [
     name: "Vigo",
     center: [-8.715, 42.215],
     zoom: 12,
-    intro: "Cuatro piscinas municipales, la pista de la UVigo abierta al público y piscinas de agua salada gratis en verano.",
+    intro: "Cuatro piscinas municipales cubiertas y la pista y el gimnasio de la UVigo, abiertos también al público.",
     tips: [
       {
         text: "El abono municipal de piscinas vale en las cuatro piscinas cubiertas de la ciudad.",
@@ -73,6 +72,8 @@ export const CITIES: City[] = [
   },
 ];
 
+// Criterio: solo instalaciones donde se puede entrenar (piscinas con calles para nadar largos,
+// pistas de atletismo, gimnasios y clubes). No se incluyen piscinas de ocio o de baño.
 export const FACILITIES: Facility[] = [
   // ---------------- VIGO ----------------
   {
@@ -182,20 +183,6 @@ export const FACILITIES: Facility[] = [
       { type: "abono", label: "Abono mUVer (salas y pistas)", covers: ["gym", "track"], amount: 15, abonoId: "uvigo-muver", status: "official", year: "2019-20", sourceUrl: SRC.uvigo, note: "180 € al año" },
     ],
     sources: [{ label: "Tarifas UVigo 2019-20", url: SRC.uvigo }],
-    reviewedAt: REVIEWED,
-  },
-  {
-    slug: "piscinas-samil",
-    city: "vigo",
-    name: "Piscinas de Samil",
-    zone: "Samil",
-    kinds: ["swim", "free"],
-    location: { lat: 42.2085, lng: -8.7745 },
-    highlights: ["Cuatro piscinas de agua salada en el paseo de Samil", "Gratis del 23 de mayo al 30 de septiembre (temporada 2025)"],
-    status: "seasonal",
-    statusNote: "Solo en verano",
-    prices: [{ type: "entrada", label: "Acceso", covers: ["swim"], amount: 0, status: "official", year: "2025", sourceUrl: SRC.samil }],
-    sources: [{ label: "Concello de Vigo", url: SRC.samil }],
     reviewedAt: REVIEWED,
   },
   {

@@ -40,15 +40,19 @@ describe("cheapestPlan en Vigo", () => {
     expect(r.best?.monthly).toBeCloseTo(11.25, 2);
   });
 
-  it("ignora instalaciones en obras o de temporada", () => {
+  it("ignora instalaciones en obras", () => {
     const r = cheapestPlan(vigo, { swim: 5, track: 0, gym: 0 });
-    expect(r.best?.lines.every((l) => !l.facilitySlug.includes("samil") && !l.facilitySlug.includes("teis"))).toBe(true);
+    expect(r.best?.lines.every((l) => !l.facilitySlug.includes("teis"))).toBe(true);
   });
 });
 
 describe("headlinePrice", () => {
-  it("muestra Gratis en Samil", () => {
-    const samil = getFacilities("vigo").find((f) => f.slug === "piscinas-samil")!;
-    expect(headlinePrice(samil).value).toBe("Gratis");
+  it("muestra el precio por uso más bajo con bono", () => {
+    const pista = getFacilities("a-coruna").find((f) => f.slug === "pista-cubierta-riazor")!;
+    expect(headlinePrice(pista).caption).toBe("por uso con bono");
+  });
+
+  it("solo incluye instalaciones de entrenamiento (sin piscinas de ocio)", () => {
+    expect(getFacilities("vigo").some((f) => f.slug.includes("samil"))).toBe(false);
   });
 });
