@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
+// STATIC_EXPORT=1 genera una versión 100% estática en la carpeta "out"
+// (para subirla a cualquier hosting estático, por ejemplo Netlify Drop).
+const isExport = process.env.STATIC_EXPORT === "1";
+
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  ...(isExport
+    ? { output: "export" as const, trailingSlash: true, images: { unoptimized: true } }
+    : {}),
   turbopack: {
     rules: {
       "*.css": {

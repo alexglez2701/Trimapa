@@ -28,6 +28,14 @@ npm test           # tests de la calculadora
 npm run build      # build de producción
 ```
 
+## Verla publicada en 2 minutos (sin instalar nada)
+
+```bash
+STATIC_EXPORT=1 npx next build   # genera la carpeta "out" con la web estática
+```
+
+Arrastra la carpeta `out` (o un zip con su contenido) a [app.netlify.com/drop](https://app.netlify.com/drop). Para conservarla, crea una cuenta gratuita y reclama el sitio en menos de una hora.
+
 ## Publicarla en internet (Vercel, gratis)
 
 1. Sube esta carpeta a un repositorio de GitHub.

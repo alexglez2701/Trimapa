@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import type { MetadataRoute } from "next";
 import { APP } from "@/config";
 import { CITIES, FACILITIES } from "@/data/facilities";
