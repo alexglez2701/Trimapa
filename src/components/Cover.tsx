@@ -9,6 +9,8 @@ export function Cover({ kind, id, className = "" }: { kind: Kind; id: string; cl
       {kind === "track" ? <Track g={g} /> : null}
       {kind === "gym" ? <Gym g={g} /> : null}
       {kind === "club" ? <Club g={g} /> : null}
+      {kind === "runclub" ? <Club g={g} from="#ef7aa3" to="#b8325f" /> : null}
+      {kind === "cycling" ? <Cycling g={g} /> : null}
     </svg>
   );
 }
@@ -87,13 +89,13 @@ function Gym({ g }: { g: string }) {
   );
 }
 
-function Club({ g }: { g: string }) {
+function Club({ g, from = "#5cc296", to = "#1f7d53" }: { g: string; from?: string; to?: string }) {
   return (
     <>
       <defs>
         <linearGradient id={`${g}-c`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#5cc296" />
-          <stop offset="1" stopColor="#1f7d53" />
+          <stop offset="0" stopColor={from} />
+          <stop offset="1" stopColor={to} />
         </linearGradient>
       </defs>
       <rect width="400" height="200" fill={`url(#${g}-c)`} />
@@ -104,6 +106,27 @@ function Club({ g }: { g: string }) {
         <circle cx="170" cy="70" r="12" />
         <circle cx="205" cy="62" r="14" />
         <circle cx="240" cy="70" r="12" />
+      </g>
+    </>
+  );
+}
+
+function Cycling({ g }: { g: string }) {
+  return (
+    <>
+      <defs>
+        <linearGradient id={`${g}-b`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#f2b450" />
+          <stop offset="1" stopColor="#b86a0c" />
+        </linearGradient>
+      </defs>
+      <rect width="400" height="200" fill={`url(#${g}-b)`} />
+      <path d="M-10 170 C 90 120, 170 190, 260 140 S 380 90, 420 110" fill="none" stroke="#fff" strokeOpacity="0.35" strokeWidth="18" strokeLinecap="round" />
+      <path d="M-10 170 C 90 120, 170 190, 260 140 S 380 90, 420 110" fill="none" stroke="#fff" strokeOpacity="0.9" strokeWidth="2" strokeDasharray="10 10" />
+      <g fill="none" stroke="#fff" strokeWidth="5" strokeOpacity="0.95" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="150" cy="96" r="30" />
+        <circle cx="250" cy="96" r="30" />
+        <path d="M150 96 L180 50 L232 50 L250 96 M180 50 L205 96 L150 96 M172 40 H192 M232 50 L226 36 H244" />
       </g>
     </>
   );

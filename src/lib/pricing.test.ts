@@ -89,3 +89,21 @@ describe("priceSummary diario por disciplina principal", () => {
     expect(s.daily.detail).toContain("natación");
   });
 });
+
+describe("grupos (run clubs y ciclismo)", () => {
+  it("hay run clubs en las dos ciudades y todos tienen quedadas y fuente", () => {
+    for (const c of ["vigo", "a-coruna"] as const) {
+      const groups = getFacilities(c).filter((f) => f.kinds.includes("runclub"));
+      expect(groups.length).toBeGreaterThan(0);
+      groups.forEach((g) => {
+        expect(g.group?.schedule.length).toBeGreaterThan(0);
+        expect(g.sources.length).toBeGreaterThan(0);
+      });
+    }
+  });
+
+  it("los grupos no entran en la calculadora", () => {
+    const r = cheapestPlan(getFacilities("a-coruna"), { swim: 2, track: 1, gym: 1 });
+    expect(r.best?.lines.every((l) => !l.facilitySlug.includes("run") && !l.facilitySlug.includes("ciclista"))).toBe(true);
+  });
+});

@@ -19,7 +19,7 @@ export default function Home() {
           Dónde entrenar, y cuánto te va a costar.
         </h1>
         <p className="mt-4 text-lg leading-relaxed text-ink-2">
-          Piscinas, pistas de atletismo, gimnasios y clubes en un solo mapa, con precios de entrada, bono y abono, y una calculadora que te dice qué combinación sale más barata.
+          Piscinas, pistas de atletismo, gimnasios, clubes, run clubs y salidas en bici en un solo mapa, con precios de entrada, bono y abono, y una calculadora que te dice qué combinación sale más barata.
         </p>
       </section>
 
@@ -52,7 +52,7 @@ export default function Home() {
 
       <section className="mt-12 grid gap-6 sm:grid-cols-3" aria-label="Qué puedes hacer">
         {[
-          { icon: MapPinned, title: "Todo en un mapa", text: "Piscinas, pistas, gimnasios y clubes, con su estado: abierta, en obras o solo en verano." },
+          { icon: MapPinned, title: "Todo en un mapa", text: "Piscinas, pistas, gimnasios, clubes y quedadas para correr o rodar en grupo si estás de paso." },
           { icon: ReceiptEuro, title: "Precios con fuente", text: "Cada precio enlaza a su origen e indica el año de la tarifa, para que sepas cuánto fiarte." },
           { icon: Calculator, title: "Paga lo justo", text: "Dinos cuántas sesiones haces a la semana y te decimos si te compensa abono, bono o entrada." },
         ].map(({ icon: Icon, title, text }) => (

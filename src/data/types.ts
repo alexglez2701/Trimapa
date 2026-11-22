@@ -1,5 +1,5 @@
 export type Discipline = "swim" | "track" | "gym";
-export type Kind = Discipline | "club" | "free";
+export type Kind = Discipline | "club" | "runclub" | "cycling" | "free";
 
 /**
  * Estado de verificación de un precio:
@@ -45,6 +45,17 @@ export interface Photo {
   sourceUrl?: string;
 }
 
+/** Quedadas de grupos (run clubs, salidas en bici). */
+export interface GroupInfo {
+  schedule: { when: string; where?: string; note?: string }[];
+  /** "Gratis", "De pago", etc. */
+  cost?: string;
+  level?: string;
+  /** Cómo apuntarse o enterarse de las quedadas. */
+  join?: string;
+  links?: Source[];
+}
+
 export interface Facility {
   slug: string;
   city: CityId;
@@ -57,6 +68,8 @@ export interface Facility {
   highlights: string[];
   /** Foto real de la instalación. Si no hay, se muestra una ilustración. */
   photo?: Photo;
+  /** Solo para run clubs y grupos de ciclismo. */
+  group?: GroupInfo;
   status?: "open" | "works" | "intermittent" | "seasonal";
   statusNote?: string;
   prices: Price[];

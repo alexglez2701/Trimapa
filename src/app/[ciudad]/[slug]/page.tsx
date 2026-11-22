@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CheckCircle2, ExternalLink, MapPin, Navigation, PencilLine } from "lucide-react";
+import { ArrowLeft, CalendarClock, CheckCircle2, ExternalLink, MapPin, Navigation, PencilLine, UserPlus } from "lucide-react";
 import { APP } from "@/config";
 import { FACILITIES, getCity, getFacilities, getFacility } from "@/data/facilities";
 import type { Price } from "@/data/types";
@@ -102,6 +102,59 @@ export default async function FacilityPage({ params }: Params) {
               ))}
             </ul>
 
+            {f.group ? (
+              <section className="mt-8" aria-labelledby="quedadas">
+                <h2 id="quedadas" className="text-xl font-bold">
+                  Quedadas
+                </h2>
+                <ul className="mt-3 divide-y divide-line overflow-hidden rounded-[var(--radius-card)] bg-surface ring-1 ring-line">
+                  {f.group.schedule.map((m) => (
+                    <li key={m.when + (m.where ?? "")} className="flex gap-3 p-4">
+                      <CalendarClock size={20} className="mt-0.5 shrink-0 text-accent" />
+                      <div>
+                        <p className="font-semibold">{m.when}</p>
+                        {m.where ? <p className="text-sm text-ink-2">{m.where}</p> : null}
+                        {m.note ? <p className="mt-0.5 text-sm text-muted">{m.note}</p> : null}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <dl className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {f.group.cost ? (
+                    <div className="rounded-2xl bg-surface p-4 ring-1 ring-line">
+                      <dt className="text-sm font-semibold text-muted">Precio</dt>
+                      <dd className="mt-1 font-semibold">{f.group.cost}</dd>
+                    </div>
+                  ) : null}
+                  {f.group.level ? (
+                    <div className="rounded-2xl bg-surface p-4 ring-1 ring-line">
+                      <dt className="text-sm font-semibold text-muted">Nivel</dt>
+                      <dd className="mt-1 font-semibold">{f.group.level}</dd>
+                    </div>
+                  ) : null}
+                </dl>
+                {f.group.join || f.group.links?.length ? (
+                  <div className="mt-4 rounded-2xl bg-accent-soft p-4">
+                    <p className="flex items-center gap-2 font-semibold text-accent-strong">
+                      <UserPlus size={17} /> Cómo unirte
+                    </p>
+                    {f.group.join ? <p className="mt-1 text-[15px] text-accent-strong">{f.group.join}</p> : null}
+                    {f.group.links?.length ? (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {f.group.links.map((l) => (
+                          <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-accent-strong ring-1 ring-accent/20">
+                            {l.label} <ExternalLink size={13} />
+                          </a>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+                <p className="mt-3 text-sm text-muted">Información pública de prensa y redes. Confirma la próxima quedada en sus redes antes de ir.</p>
+              </section>
+            ) : null}
+
+            {f.group ? null : (
             <section className="mt-8" aria-labelledby="precios">
               <h2 id="precios" className="text-xl font-bold">
                 Precios
@@ -143,6 +196,7 @@ export default async function FacilityPage({ params }: Params) {
                 </p>
               ) : null}
             </section>
+            )}
           </div>
 
           <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">

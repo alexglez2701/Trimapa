@@ -13,6 +13,8 @@ const GLYPH: Record<Kind, string> = {
   track: '<path d="M4 13c0-3 1-5 3-5s2 3 1 5M11 11c0-3 1-5 3-5" /><circle cx="6" cy="14.5" r="0.6"/><circle cx="13" cy="12.5" r="0.6"/>',
   gym: '<path d="M3 10h12M5 6.5v7M13 6.5v7M2.5 8v4M15.5 8v4" />',
   club: '<circle cx="6" cy="7" r="2"/><circle cx="12" cy="7" r="2"/><path d="M2.5 14c.5-2.5 2-3.5 3.5-3.5s3 1 3.5 3.5M8.5 14c.5-2.5 2-3.5 3.5-3.5s3 1 3.5 3.5" />',
+  runclub: '<path d="M3 14c2-1 3-4 6-4s3 3 6 2M5 6.5a1.6 1.6 0 1 0 0-.1M12 4.5a1.6 1.6 0 1 0 0-.1" />',
+  cycling: '<circle cx="4.5" cy="12" r="3"/><circle cx="13.5" cy="12" r="3"/><path d="M4.5 12l3-5h4l2 5M7.5 7l2 5" />',
   free: '<path d="M3 8h12v7H3zM2 5.5h14V8H2zM9 5.5V15M9 5.5C7 2 4.5 3.5 6 5.5M9 5.5c2-3.5 4.5-2 3-0" />',
 };
 

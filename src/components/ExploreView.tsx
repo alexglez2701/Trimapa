@@ -12,7 +12,7 @@ import { LogoMark } from "./Logo";
 import { MapView } from "./MapView";
 import { PriceStatus } from "./Badges";
 
-const FILTERS: (Kind | "all")[] = ["all", "swim", "track", "gym", "club", "free"];
+const FILTERS: (Kind | "all")[] = ["all", "swim", "track", "gym", "club", "runclub", "cycling", "free"];
 
 export function ExploreView({ city, facilities }: { city: City; facilities: Facility[] }) {
   const [filter, setFilter] = useState<Kind | "all">("all");
@@ -144,10 +144,14 @@ function Preview({ facility, onClose, floating = false }: { facility: Facility; 
       </span>
       <Link href={`/${facility.city}/${facility.slug}`} className="min-w-0 flex-1">
         <p className="truncate font-bold">{facility.name}</p>
-        <p className="flex items-center gap-2 text-sm text-muted">
-          <span className="tabular font-semibold text-ink">{h.value}</span>
-          {h.caption}
-        </p>
+        {facility.group ? (
+          <p className="truncate text-sm text-muted">{facility.group.schedule.map((x) => x.when).join(" · ")}</p>
+        ) : (
+          <p className="flex items-center gap-2 text-sm text-muted">
+            <span className="tabular font-semibold text-ink">{h.value}</span>
+            {h.caption}
+          </p>
+        )}
       </Link>
       <div className="flex flex-col items-end gap-1">
         <button type="button" onClick={onClose} aria-label="Cerrar" className="text-muted">

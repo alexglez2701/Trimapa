@@ -1,4 +1,4 @@
-import { CalendarDays, CalendarRange, Ticket } from "lucide-react";
+import { CalendarClock, CalendarDays, CalendarRange, Euro, Ticket } from "lucide-react";
 import type { Facility } from "@/data/types";
 import { priceSummary, type SummaryItem } from "@/lib/pricing";
 
@@ -17,6 +17,23 @@ function tone(item: SummaryItem) {
 export function PriceSummary({ facility, size = "sm" }: { facility: Facility; size?: "sm" | "lg" }) {
   if (facility.status === "works") {
     return <p className="rounded-2xl bg-canvas px-3 py-2.5 text-sm text-muted">Cerrada por obras: sin precios hasta que reabra.</p>;
+  }
+  if (facility.group) {
+    const g = facility.group;
+    return (
+      <div className="space-y-1.5 rounded-2xl bg-canvas px-3 py-2.5 text-sm">
+        <p className="flex items-start gap-2">
+          <CalendarClock size={15} className="mt-0.5 shrink-0 text-muted" />
+          <span className="font-semibold">{g.schedule.map((x) => x.when).join(" · ")}</span>
+        </p>
+        {g.cost ? (
+          <p className="flex items-start gap-2 text-muted">
+            <Euro size={15} className="mt-0.5 shrink-0" />
+            {g.cost}
+          </p>
+        ) : null}
+      </div>
+    );
   }
   if (facility.kinds.length === 1 && facility.kinds[0] === "club") {
     const cuota = facility.prices.find((p) => p.type === "cuota");
