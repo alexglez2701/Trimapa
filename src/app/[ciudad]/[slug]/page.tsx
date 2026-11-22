@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const f = getFacility(ciudad, slug);
   if (!f) return {};
   return {
-    title: `${f.name}: precios y horarios para entrenar`,
+    title: f.group ? `${f.name}: quedadas para entrenar en grupo` : `${f.name}: precios y horarios para entrenar`,
     description: `${f.name} (${f.zone}). ${f.highlights.join(". ")}.`,
   };
 }
